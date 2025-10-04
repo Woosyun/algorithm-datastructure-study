@@ -107,3 +107,42 @@ class RBTree:
                     self.left_rotate(x.parent)
         self.root.color = 1
 
+    def delete(self, value):
+        original_color = 0
+
+        # 1. find target node
+        x = self.root
+        while x != None and x.value != value:
+            if x.value > value:
+                x = x.left
+            else:
+                x = x.right
+        original_color = x.color
+
+        # 2. remove
+        if x.left != None and x.right != None:
+            # choose minimum of right child tree
+            y = find_minimum(x.right)
+        elif x.left != None:
+            y = x.left
+        elif y.right != None:
+            y = x.right
+        else:
+            y = None
+        # swap y and x
+        if y != None:
+            y.parent = x.parent
+        if x.parent == None:
+            self.root = y
+        elif x.parent.right == x:
+            x.parent.right = y
+        else:
+            x.parent.left = y
+        # remove x => ?
+
+        #  3. if removed node is black, do something
+        if original_color == 1:
+            self.delete_fixup(y)
+
+    def delete_fixup(self, x):
+        #todo!
